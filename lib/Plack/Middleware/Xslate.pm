@@ -109,9 +109,20 @@ sub serve_path {
 
     my $rendered = $self->{xslate}->render($filename, $self->xslate_vars);
 
-    $res->[2] = [ $rendered ];
+    my @headers;
+    while (@{ $res->[1] }) {
+        my ($k, $v) = splice @{ $res->[1] }, 0, 2;
+        if ($k =~ /^content-length$/i) {
+            $v = length($rendered);
+        }
+        push @headers, $k, $v;
+    }
 
-    return $res;
+    return [
+        $res->[0],
+        \@headers,
+        [ $rendered ]
+    ];
 }
 
 =head1 BUGS
