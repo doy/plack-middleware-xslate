@@ -1,12 +1,50 @@
 package Plack::Middleware::Xslate;
 use strict;
 use warnings;
+# ABSTRACT: serve static templates with Plack
 
 use base 'Plack::Middleware::Static';
 
 use Plack::Util::Accessor 'xslate_args', 'xslate_vars';
 
 use Text::Xslate;
+
+=head1 SYNOPSIS
+
+  use Plack::Builder;
+
+  builder {
+      enable "Xslate",
+          path => qr{^/}, root => 'root/templates/', pass_through => 1;
+      $app;
+  };
+
+=head1 DESCRIPTION
+
+This middleware allows you to serve files processed as L<Text::Xslate>
+templates. This is useful for serving sites that are essentially static
+content, but with a consistent structure (which can be pulled out into a single
+template to include, rather than duplicated across every page).
+
+Configuration for this middleware is identical to L<Plack::Middleware::Static>,
+with these additional options:
+
+=over 4
+
+=item xslate_args
+
+A hashref of arguments to pass to the L<Text::Xslate> constructor. Note that
+you cannot pass a C<path> argument here - it will be overridden by the C<root>
+option.
+
+=item xslate_vars
+
+A hashref of data to use when rendering the template. This will be passed to
+C<< Text::Xslate->render >> every time a template is rendered.
+
+=back
+
+=cut
 
 sub prepare_app {
     my $self = shift;
@@ -75,5 +113,51 @@ sub serve_path {
 
     return $res;
 }
+
+=head1 BUGS
+
+No known bugs.
+
+Please report any bugs through RT: email
+C<bug-plack-middleware-xslate at rt.cpan.org>, or browse to
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Plack-Middleware-Xslate>.
+
+=head1 SEE ALSO
+
+L<Plack::Request> - Much of this module's API and implementation were taken
+from Plack::Request.
+
+=head1 SUPPORT
+
+You can find this documentation for this module with the perldoc command.
+
+    perldoc Plack::Middleware::Xslate
+
+You can also look for information at:
+
+=over 4
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Plack-Middleware-Xslate>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/Plack-Middleware-Xslate>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-Xslate>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Plack-Middleware-Xslate>
+
+=back
+
+=for Pod::Coverage
+  prepare_app
+
+=cut
 
 1;
