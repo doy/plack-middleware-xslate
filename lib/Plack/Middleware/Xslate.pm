@@ -135,8 +135,9 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Plack-Middleware-Xslate>.
 
 =head1 SEE ALSO
 
-L<Plack::Request> - Much of this module's API and implementation were taken
-from Plack::Request.
+L<Plack::Middleware::Static>
+
+L<Plack::Middleware::TemplateToolkit>
 
 =head1 SUPPORT
 
