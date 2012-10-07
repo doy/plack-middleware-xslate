@@ -1,6 +1,7 @@
 Revision history for Plack-Middleware-Xslate
 
 {{$NEXT}}
+      - fix see also section in the docs
 
 0.01  2012-10-07
       - Initial release
