@@ -10,7 +10,7 @@ use Plack::Builder;
 my $app = builder {
     enable "Xslate",
         path => qr{^/}, root => 't/basic/', pass_through => 1;
-    sub { [ 404, [], [ 'Not found' ] ] };
+    sub { [ 404, [], [ 'pass_through to base app' ] ] };
 };
 
 test_psgi
@@ -40,6 +40,7 @@ CONTENT
         {
             my $res = $cb->(GET '/missing.html');
             is($res->code, 404);
+            is($res->content, 'pass_through to base app');
         }
     };
 
