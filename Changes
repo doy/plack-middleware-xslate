@@ -1,6 +1,8 @@
 Revision history for Plack-Middleware-Xslate
 
 {{$NEXT}}
+
+0.03  2012-10-07
       - small bit of internal refactoring
 
 0.02  2012-10-07
