@@ -21,7 +21,7 @@ test_psgi
         {
             my $res = $cb->(GET '/index.html');
             ok($res->is_success) || diag($res->content);
-            is($res->content, <<'CONTENT');
+            my $rendered = <<'CONTENT';
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,6 +33,8 @@ test_psgi
 </body>
 </html>
 CONTENT
+            is($res->content, $rendered);
+            is($res->header('Content-Length'), length($rendered));
         }
 
         {

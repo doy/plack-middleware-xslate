@@ -107,22 +107,13 @@ sub serve_path {
         $filename = File::Spec->abs2rel($filename, $self->root);
     }
 
-    my $rendered = $self->{xslate}->render($filename, $self->xslate_vars);
-
-    my @headers;
-    while (@{ $res->[1] }) {
-        my ($k, $v) = splice @{ $res->[1] }, 0, 2;
-        if ($k =~ /^content-length$/i) {
-            $v = length($rendered);
-        }
-        push @headers, $k, $v;
-    }
-
-    return [
-        $res->[0],
-        \@headers,
-        [ $rendered ]
+    $res->[2] = [
+        $self->{xslate}->render($filename, $self->xslate_vars)
     ];
+
+    Plack::Util::header_set($res->[1], 'Content-Length', length($res->[2][0]));
+
+    return $res;
 }
 
 =head1 BUGS
